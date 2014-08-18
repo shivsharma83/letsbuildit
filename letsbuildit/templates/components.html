@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h1>Components and Detials</h1>
+<style>
+table,th,td
+{
+border:1px solid black;
+border-collapse:collapse;
+}
+th,td
+{
+padding:5px;
+}
+th
+{
+text-align:left;
+}
+</style>
+</head>
+<body>
+
+<table style="width:300px">
+<tr>
+  <th>Component</th>
+  <th>Component Type</th>		
+  <th>Version Control</th>
+  <th>Repo URL</th>
+  <th>Branch</th>
+</tr>
+{% for component in components %}
+<tr>
+  <td>{{ component}}</td>
+  <td>{{ component.type }}</td>		
+  <td>{{ component.vc }}</td>
+  <td>{{ component.repo }}</td>
+  <td>{{ component.comp_branch }}</td>
+</tr>
+{% endfor %}
+</table>
+
+</body>
+</html>

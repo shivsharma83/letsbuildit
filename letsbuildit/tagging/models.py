@@ -13,6 +13,10 @@ class vc_credentials(models.Model):
 
         def __unicode__(self):
 		return self.version_control
+	def username(self):
+		return self.userid
+	def passwd(self):
+		return self.password
 
 class components(models.Model):
 	component_name  = models.CharField("Component's Name",max_length=50,primary_key=True)
@@ -22,7 +26,15 @@ class components(models.Model):
         branch          = models.CharField("Branch",max_length=20)
 
 	def __unicode__(self):
+		return self.component_name
+	def type(self):
 		return self.component_type
+	def vc(self):
+		return self.version_control
+	def repo(self):
+		return self.repo_path
+	def comp_branch(self):
+		return self.branch
 
 class tag_history(models.Model):
 	component_name    = models.ForeignKey(components,primary_key=True)
