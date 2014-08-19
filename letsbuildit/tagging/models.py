@@ -44,3 +44,16 @@ class tag_history(models.Model):
 
 	def __unicode__(self):
 		return u'%s %s' % (self.component_name, self.latest_tag)
+
+	def tagname(self):
+                return self.tag
+        
+        def created(self):
+                return self.datetime
+
+        def componentname(self):
+                return self.component_name
+
+        def islatest(self):
+                return self.latest_tag
+

@@ -15,7 +15,7 @@ def components(request):
         componentlist = models.components.objects.all()
         return render(request, 'components.html', {'components' : componentlist})
 
-def refreshtags(request):
-	refreshtag.addtagsindb("all")
-	componentlist = models.tag_history.objects.all()
-        return render(request, 'refreshtags.html', {'components' : componentlist})
+def tags(request):
+#	refreshtag.addtagsindb("all")
+	tagslist = models.tag_history.objects.all()
+        return render(request, 'latesttags.html', {'tags' : tagslist})

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h1>Components and latest tags</h1>
+<style>
+table,th,td
+{
+border:1px solid black;
+border-collapse:collapse;
+}
+th,td
+{
+padding:5px;
+}
+th
+{
+text-align:left;
+}
+</style>
+</head>
+<body>
+
+<table style="width:300px">
+<tr>
+  <th>Component</th>
+  <th>Tag</th>		
+  <th>When</th>
+  <th>Latest</th>
+</tr>
+{% for component in tags %}
+<tr>
+  <td>{{ component.componentname}}</td>
+  <td>{{ component.tagname }}</td>		
+  <td>{{ component.created }}</td>
+  <td>{{ component.islatest }}</td>
+</tr>
+{% endfor %}
+</table>
+
+</body>
+</html>

@@ -6,5 +6,5 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'vcs/$', views.vcs, name='vcs'),
     url(r'components/$', views.components, name='components'),
-    url(r'refreshtags/$', views.components, name='refreshtags'),
+    url(r'latesttags/$', views.tags, name='tags'),
 )
