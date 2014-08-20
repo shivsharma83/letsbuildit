@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h1>Tagged components</h1>
+
+<style>
+table,th,td
+{
+border:1px solid black;
+border-collapse:collapse;
+}
+th,td
+{
+padding:5px;
+}
+th
+{
+text-align:left;
+}
+</style>
+
+<table style="width:300px">
+<tr>
+  <th>Component</th>
+  <th>New Tag</th>
+</tr>
+
+{% for component in tags %}
+<tr>
+  <td>{{ component.componentname }}</td>
+  <td>{{ component.tagname }} </td>		
+</tr>
+</table>
+{% endfor %}
+</body>
+</html>
+
+

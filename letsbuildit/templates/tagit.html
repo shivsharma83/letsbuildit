@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h1>Tag the components</h1>
+
+<style>
+table,th,td
+{
+border:1px solid black;
+border-collapse:collapse;
+}
+th,td
+{
+padding:5px;
+}
+th
+{
+text-align:left;
+}
+</style>
+
+<table style="width:300px">
+<tr>
+  <th>Component</th>
+  <th>Latest Tag</th>		
+  <th>New Tag</th>
+</tr>
+
+<form action="" method="post">
+{% for form in formset %}
+{% for component in tags %}
+<tr>
+  <td>{{ component.componentname}}</td>
+  <td>{{ component.tagname }}</td>		
+  <td>{{ form }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endfor %}
+{% csrf_token %}
+<input type="submit" value="Tag it!">
+</form> 
+</body>
+</html>
+
+
