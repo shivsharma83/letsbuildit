@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'components/$', views.components, name='components'),
     url(r'latesttags/$', views.tags, name='tags'),
     url(r'refreshtags/$', views.refreshtags, name='refreshtags'),
+    url(r'tagit/$', views.tagit, name='tagit'),
 )

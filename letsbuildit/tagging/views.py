@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from tagging import models, refreshtag
+from tagging import models, refreshtag, forms
 
 # Create your views here.
 
@@ -22,4 +22,12 @@ def tags(request):
 def refreshtags(request):
         tagslist = refreshtag.addtagsindb("all")
         return render(request, 'refresh_tags.html', {'tagslist' : tagslist})
+
+def tagit(request):
+	tagslist = models.tag_history.objects.all()
+	###render(request, 'tagit.html', {'tags' : tagslist})
+	formset = forms.TagitFormSet(request.POST)
+        return render(request, 'tagit.html', {'tags' : tagslist, 'formset' : formset})
+
+
 
