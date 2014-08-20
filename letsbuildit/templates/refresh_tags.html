@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<h1>Components and latest tags</h1>
+<h1>Components and tags</h1>
 <style>
 table,th,td
 {
@@ -19,23 +19,22 @@ text-align:left;
 </style>
 </head>
 <body>
-
+{% for component, values in tagslist.items %}
+<h3>component</h3>
 <table style="width:300px">
-<tr>
-  <th>Component</th>
-  <th>Tag</th>		
-  <th>When</th>
-  <th>Latest</th>
-</tr>
-{% for component in components %}
-<tr>
-  <td>{{ component}}</td>
-  <td>{{ component.tagname }}</td>		
-  <td>{{ component.created }}</td>
-  <td>{{ component.islatest }}</td>
-</tr>
-{% endfor %}
+    <tr>
+        <th>Tag</th>
+        <th>When</th>
+    </tr>
+    {% for tag, when in values.items %}
+    <tr>
+        <td>{{ tag }}</td>
+        <td>{{ when }}</td>
+    </tr>
+    {% endfor %}
 </table>
-
+<table style="width:300px">
+</table>
+{% endfor %}
 </body>
 </html>
