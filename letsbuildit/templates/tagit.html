@@ -26,17 +26,15 @@ text-align:left;
   <th>New Tag</th>
 </tr>
 
-<form action="" method="post">
-{% for form in formset %}
+<form action="/tagging/tagged/" method="post">
 {% for component in tags %}
 <tr>
-  <td>{{ component.componentname}}</td>
+  <td>{{ component.componentname }}</td>
   <td>{{ component.tagname }}</td>		
-  <td>{{ form }}</td>
+  <td><input type="text" name={{ component.componentname }}></td>
 </tr>
 {% endfor %}
 </table>
-{% endfor %}
 {% csrf_token %}
 <input type="submit" value="Tag it!">
 </form> 

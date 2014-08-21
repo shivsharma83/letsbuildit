@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'latesttags/$', views.tags, name='tags'),
     url(r'refreshtags/$', views.refreshtags, name='refreshtags'),
     url(r'tagit/$', views.tagit, name='tagit'),
+    url(r'tagged/$', views.tagged, name='tagged'),
 )

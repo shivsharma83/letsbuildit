@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from tagging import models, refreshtag, forms
+from tagging import models, refreshtag, forms, updatetags
 
 # Create your views here.
 
@@ -25,9 +25,21 @@ def refreshtags(request):
 
 def tagit(request):
 	tagslist = models.tag_history.objects.all()
-	###render(request, 'tagit.html', {'tags' : tagslist})
-	formset = forms.TagitFormSet(request.POST)
-        return render(request, 'tagit.html', {'tags' : tagslist, 'formset' : formset})
+        return render(request, 'tagit.html', {'tags' : tagslist})
 
+def tagged(request):
+	results = {}
+	tagslist = models.tag_history.objects.all()
+	for tag in tagslist:
+		if tag.componentname().__unicode__() in request.POST:
+			if request.POST[tag.componentname().__unicode__()] != "":
+				result = updatetags.updategittag(tag.componentname().__unicode__(), request.POST[tag.componentname().__unicode__()], "Adding Tag " + request.POST[tag.componentname().__unicode__()])
+				if result == 'Pass':
+					results[tag.componentname().__unicode__()] = request.POST[tag.componentname().__unicode__()]
+				else:
+					results[tag.componentname().__unicode__()] = "Failed to tag!!!"
+			else:
+				results[tag.componentname().__unicode__()] = "No New Tag!!!"
 
-
+	taglist = refreshtag.addtagsindb("all")
+	return render(request, 'tagged.html', {'results' : results})
