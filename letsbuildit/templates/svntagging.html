@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h1>Tag SVN components</h1>
+
+<style>
+table,th,td
+{
+border:1px solid black;
+border-collapse:collapse;
+}
+th,td
+{
+padding:5px;
+}
+th
+{
+text-align:left;
+}
+</style>
+
+<table style="width:300px">
+<tr>
+  <th>Component Type (shared or non-shared)</th>
+  <th>Tag DIR</th>		
+  <th>New Tag</th>
+  <th>Message</th>
+</tr>
+
+<form action="/tagging/svntagged/" method="post">
+<tr>
+  <td><input type="text" name="comp_type"></td>
+  <td><input type="text" name="tagdir"></td>
+  <td><input type="text" name="tag"></td>
+  <td><input type="text" name="message"></td>
+</tr>
+</table>
+{% csrf_token %}
+<input type="submit" value="Tag it!">
+</form> 
+</body>
+</html>
+
+

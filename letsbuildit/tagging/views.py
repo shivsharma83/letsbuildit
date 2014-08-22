@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from tagging import models, refreshtag, forms, updatetags
+from svntagging import createtag, createtagdir
 
 # Create your views here.
 
@@ -43,3 +44,15 @@ def tagged(request):
 
 	taglist = refreshtag.addtagsindb("all")
 	return render(request, 'tagged.html', {'results' : results})
+
+def svntagging(request):
+
+	return render(request, 'svntagging.html')
+
+def svntagged(request):
+
+	if request.POST['tag'] != '':
+		status = createtagdir(request.POST['tagdir'], request.POST['message'], request['comp_type'])	
+		status, alltags = createtag(request.POST['tag'], request.POST['tagdir'], request['message'], request['comp_type'])
+
+	return render(request, 'svntagged.html' , {'status' : status, 'alltags': alltags})
