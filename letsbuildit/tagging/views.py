@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from tagging import models, refreshtag, forms, updatetags, svntagging
+from tagging.buildit import *
 
 # Create your views here.
 
@@ -64,3 +65,18 @@ def svntagged(request):
 			alltags= "Nothing"
 
 	return render(request, 'svntagged.html' , {'status' : status, 'alltags': alltags})
+
+
+def buildit(request):
+        tagslist = models.tag_history.objects.all()
+        return render(request, 'buildit.html', {'components' : tagslist})
+
+def building(request):
+        results = {}
+        tagslist = models.tag_history.objects.all()
+        for tag in tagslist:
+		if tag.componentname().__unicode__() in request.POST:
+			build(tag.componentname().__unicode__(), "http://anthill.yellgroup.com:18080/tasks/project/WorkflowTasks/viewDashboard?workflowId=4319" , tag.tagname())
+			results[tag.componentname().__unicode__()] = "Yes"
+
+        return render(request, 'building.html', {'results' : results})

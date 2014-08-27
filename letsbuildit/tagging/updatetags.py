@@ -1,4 +1,4 @@
-from sh import svn, ErrorReturnCode_1, ErrorReturnCode
+from sh import git, svn, ErrorReturnCode_1, ErrorReturnCode
 from tempfile import *
 import os
 from git import *
@@ -26,21 +26,21 @@ def updategittag(component, newtag , message):
 	repo_credentials = comp[0]['repo_path'][:8] + user + ':' + passwd + '@' + comp[0]['repo_path'][8:]
 	branch = comp[0]['branch']
 	try:
-		rep = sh.git.clone("-b", branch , repo_credentials)
+		rep = git.clone("-b", branch , repo_credentials)
 	except:
 		raise
 
 	repo_path = tempdir + '/' + comp[0]['component_name']
 
 	repo = Repo(repo_path)
-	git = repo.git
+	gitobj = repo.git
 
-	if newtag in git.tag().rsplit("\n"):
+	if newtag in gitobj.tag().rsplit("\n"):
 		status = "Fail"	
 	else:
-		git.tag(newtag,m=message)
-	        git.remote("add","upstream",repo_credentials)
-		git.push("upstream",newtag,"--force")
+		gitobj.tag(newtag,m=message)
+	        gitobj.remote("add","upstream",repo_credentials)
+		gitobj.push("upstream",newtag,"--force")
 		status = "Pass"
 
 	return status
