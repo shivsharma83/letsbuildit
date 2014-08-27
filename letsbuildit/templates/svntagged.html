@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<h1>Components tagged are below</h1>
-
+<h1>Tagged SVN Component</h1>
 <style>
 table,th,td
 {
@@ -18,12 +17,20 @@ th
 text-align:left;
 }
 </style>
-
-{{ status }}
-{{ alltags }}
-
+</head>
+<body>
+<h3>{{ status }}</h3>
+<table style="width:300px">
+    <tr>
+        <th>Tag</th>
+    </tr>
+    {% for tag in alltags %}
+    <tr>
+        <td>{{ tag }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<table style="width:300px">
 </table>
 </body>
 </html>
-
-

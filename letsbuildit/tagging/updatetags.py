@@ -1,4 +1,4 @@
-import sh
+from sh import svn, ErrorReturnCode_1, ErrorReturnCode
 from tempfile import *
 import os
 from git import *
@@ -44,3 +44,76 @@ def updategittag(component, newtag , message):
 		status = "Pass"
 
 	return status
+
+
+def tag_dir(newtagdir, message, comp_type):
+
+        vcs      = models.vc_credentials.objects.filter(version_control="svn").values()
+        username = vcs[0]['userid']
+        passwd   = vcs[0]['password']
+	message  = "'" + message + "'"
+        if comp_type == "non-shared":
+                comp = models.components.objects.filter(component_name="SVN", version_control="svn").values()
+        elif comp_type == "shared":
+                comp = models.components.objects.filter(component_name="SVN2", version_control="svn").values()
+        else:
+                comp = models.components.objects.filter(component_name="SVN", version_control="svn").values()
+
+        # this is just for shivlinux to recoganize .. not to go in prod
+        svn_repo = comp[0]['repo_path'][:16] + comp[0]['repo_path'][30:] + "/tags/" + newtagdir
+        #svn_repo = comp[0]['repo_path']
+
+	try:
+		dirstatus = svn.ls(svn_repo, "--no-auth-cache", "--non-interactive", "--username="+username, "--password="+passwd)
+		if dirstatus != "":
+			#Directory exists 
+			status = True
+			return status
+
+	except ErrorReturnCode_1:
+		dirstatus = False
+
+	if dirstatus is False:
+        	try:	
+        		status = svn.mkdir(svn_repo,"--no-auth-cache", "--non-interactive", "--username="+username, "--password="+passwd, "--parents","-m "+message)
+			status = True
+		except ErrorReturnCode:
+			status = False
+
+        #Save this tagdir as latest tag
+        if status is True: 
+                latesttag = newtagdir
+                when = datetime.now()
+		if comp_type == "non-shared":
+			ctrl = models.tag_history(component_name=models.components.objects.get(component_name="SVN"), tag=latesttag, datetime=when, latest_tag=True)
+		else:
+			ctrl = models.tag_history(component_name=models.components.objects.get(component_name="SVN2"), tag=latesttag, datetime=when, latest_tag=True)
+
+                ctrl.save()
+
+        return status
+
+def createtag(newtag, newtagdir, message, comp_type):
+
+        vcs      = models.vc_credentials.objects.filter(version_control="svn").values()
+        username = vcs[0]['userid']
+        passwd   = vcs[0]['password']
+	message  = "'" + message + "'"
+
+        if comp_type == "non-shared":
+                comp = models.components.objects.filter(component_name="SVN", version_control="svn").values()
+        elif comp_type == "shared":
+                comp = models.components.objects.filter(component_name="SVN2", version_control="svn").values()
+        else:
+                comp = models.components.objects.filter(component_name="SVN", version_control="svn").values()
+
+        # this is just for shivlinux to recoganize .. not to go in prod
+        svn_repo = comp[0]['repo_path'][:16] + comp[0]['repo_path'][30:]
+
+       # svn_repo = comp[0]['repo_path']
+        branch   = comp[0]['branch']
+        # Create tag and get the list of tags in the new tag dir
+
+        status  = svn.cp(svn_repo+"/branches/"+branch, svn_repo+"/tags/"+newtagdir+"/"+newtag, "--no-auth-cache", "--non-interactive", "--username="+username, "--password="+passwd, "-m"+message)
+        alltags = svn.ls(svn_repo+"/tags/"+newtagdir, "--no-auth-cache", "--non-interactive", "--username="+username, "--password="+passwd)
+        return (status, alltags)

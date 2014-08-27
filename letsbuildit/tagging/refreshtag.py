@@ -23,7 +23,7 @@ def addtagsindb(components):
 	os.chdir(tempdir)
 	# Get the list of all components and its attributes
 
-	componentlist = models.components.objects.all()
+	componentlist = models.components.objects.filter(version_control="git")
 	for component in componentlist:
 		tagdate = {}
         # Get Version control credentials

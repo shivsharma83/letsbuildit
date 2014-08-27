@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from tagging import models, refreshtag, forms, updatetags
-from svntagging import createtag, createtagdir
+from tagging import models, refreshtag, forms, updatetags, svntagging
 
 # Create your views here.
 
@@ -51,8 +50,17 @@ def svntagging(request):
 
 def svntagged(request):
 
-	if request.POST['tag'] != '':
-		status = createtagdir(request.POST['tagdir'], request.POST['message'], request['comp_type'])	
-		status, alltags = createtag(request.POST['tag'], request.POST['tagdir'], request['message'], request['comp_type'])
+	tag_dir   = request.POST['tagdir']
+	message   = request.POST['message']
+	comp_type = request.POST['comp_type']
+	tag       = request.POST['tag']
+
+	if tag_dir != "" and tag !="" :
+		status_dir = updatetags.tag_dir(tag_dir, message, comp_type)	
+		if status_dir is True:
+			status, alltags = updatetags.createtag(tag,tag_dir, message, comp_type)
+		else:
+			status = "Couldn't create tagdir and Tag"
+			alltags= "Nothing"
 
 	return render(request, 'svntagged.html' , {'status' : status, 'alltags': alltags})
